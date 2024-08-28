@@ -4,34 +4,49 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import logoRonalcaPzo from "@/components/navbar/logoRonalcaPzo.png";
-
-type Category = {
-  id: number;
-  name: string;
-};
-
-type Categories = {
-  brands: Category[];
-  models: Category[];
-  spaces: Category[];
-};
+import { Category } from "@/shared/types/category";
+import getCategory from "@/actions/category/getCategory";
+import { Dropdown } from "@mui/base/Dropdown";
+import { Menu } from "@mui/base/Menu";
+import { MenuButton } from "@mui/base/MenuButton";
+import { MenuItem, menuItemClasses } from "@mui/base/MenuItem";
+import { styled } from "@mui/system";
+import { grey } from "@mui/material/colors";
 
 export default function Navbar() {
-  const [categories, setCategories] = useState<Categories>({
-    brands: [],
-    models: [],
-    spaces: [],
-  });
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  const [isOpen, setIsOpen] = useState({
-    brands: false,
-    models: false,
-    spaces: false,
-  });
-
-  const toggleDropdown = (category: "brands" | "models" | "spaces") => {
-    setIsOpen((prev) => ({ ...prev, [category]: !prev[category] }));
+  const fetchCategories = async () => {
+    const response = await getCategory();
+    setCategories(response);
   };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  console.log(categories);
+
+  const Listbox = styled("ul")(
+    ({ theme }) => `
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.875rem;
+    box-sizing: border-box;
+    padding: 6px;
+    margin: 12px 0;
+    min-width: 200px;
+    border-radius: 12px;
+    overflow: auto;
+    outline: 0;
+    background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
+    border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
+    color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
+    box-shadow: 0px 4px 6px ${
+      theme.palette.mode === "dark" ? "rgba(0,0,0, 0.50)" : "rgba(0,0,0, 0.05)"
+    };
+    z-index: 1;
+    `
+  );
 
   return (
     <nav className="bg-white">
@@ -43,7 +58,7 @@ export default function Navbar() {
                 src={logoRonalcaPzo}
                 alt="Distribuidora Ronalca"
                 width={150}
-                height={40}
+                height={150}
               />
             </Link>
           </div>
@@ -55,54 +70,36 @@ export default function Navbar() {
               >
                 Inicio
               </Link>
-              {["brands", "models", "spaces"].map((category) => (
-                <div key={category} className="relative">
-                  <button
-                    onClick={() =>
-                      toggleDropdown(category as "brands" | "models" | "spaces")
-                    }
-                    className="text-gray-700 hover:bg-gray-100 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium flex items-center"
-                  >
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                    <svg
-                      className="ml-2 h-5 w-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
+              {Array.isArray(categories) &&
+                categories.map((category) =>
+                  category.subcategories &&
+                  category.subcategories.length > 0 ? (
+                    <Dropdown key={category.id}>
+                      <MenuButton className="text-gray-700 hover:bg-gray-100 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                        {category.name}
+                        <Menu slots={{ listbox: Listbox }}>
+                          {category.subcategories.map((subcategory) => (
+                            <MenuItem key={subcategory.id}>
+                              <Link
+                                href={`/category/${category.slug}/${subcategory.slug}`}
+                              >
+                                {subcategory.name}
+                              </Link>
+                            </MenuItem>
+                          ))}
+                        </Menu>
+                      </MenuButton>
+                    </Dropdown>
+                  ) : (
+                    <Link
+                      key={category.id}
+                      href={`/category/${category.slug}`}
+                      className="text-gray-700 hover:bg-gray-100 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  {isOpen[category as "brands" | "models" | "spaces"] && (
-                    <div className="absolute z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                      <div
-                        className="py-1"
-                        role="menu"
-                        aria-orientation="vertical"
-                        aria-labelledby="options-menu"
-                      >
-                        {categories[
-                          category as "brands" | "models" | "spaces"
-                        ].map((item) => (
-                          <Link
-                            key={item.id}
-                            href={`/${category}/${item.id}`}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                            role="menuitem"
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+                      {category.name}
+                    </Link>
+                  )
+                )}
               <button className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition duration-150 ease-in-out">
                 Contáctanos
               </button>
