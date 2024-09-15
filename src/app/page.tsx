@@ -4,6 +4,11 @@ import backgroundImage from "../../public/Rectangle 27.png";
 import CardSubcategoryByBrand from "@/components/home-page/card-brand-subcategory";
 import CardSubcategoryByModel from "@/components/home-page/card-model-subcategory";
 import CardSubcategoryByPlace from "@/components/home-page/card-place-subcategory";
+import AboutMe from "@/components/home-page/about-me";
+import Clients from "@/components/home-page/clients";
+import ProjectCarousel from "@/components/home-page/project-carousel";
+import FAQ from "@/components/faq/faq";
+import Footer from "@/components/footer/footer";
 export default function Page() {
   return (
     <div className="flex flex-col">
@@ -56,6 +61,12 @@ export default function Page() {
         <CardSubcategoryByBrand />
         <CardSubcategoryByPlace />
       </div>
+
+      <AboutMe />
+      <Clients />
+      <ProjectCarousel />
+      <FAQ />
+      <Footer />
     </div>
   );
 }
