@@ -47,14 +47,14 @@ function SubcategoryCarousel({
 
   return (
     <div className="embla overflow-hidden" ref={emblaRef}>
-      <div className="embla__container flex -mx-6">
+      <div className="embla__container flex -mx-6 justify-normal">
         {subcategories.map((subcategory) => (
           <div
             key={subcategory.id}
             className="embla__slide px-6 flex-[0_0_300px]"
           >
-            <Link href={`/category/${subcategory.slug}`} className="block">
-              <div className="bg-white rounded-3xl  shadow-md overflow-hidden transition-all duration-300 border-2 border-transparent hover:border-blue-500 group h-[400px] flex flex-col">
+            <Link href={`/categoria/${subcategory.slug}`} className="block">
+              <div className="bg-white rounded-3xl  shadow-md overflow-hidden transition-all duration-300 border-2 border-transparent hover:border-blue-500 group h-[400px] flex flex-col ">
                 <div className="p-6 flex-grow">
                   <h3 className="text-xl font-bold text-blue-700 mb-2">
                     {subcategory.name}

@@ -5,6 +5,8 @@ import Header from "@/components/header/Header";
 import Navbar from "@/components/navbar/Navbar";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { StyledRoot } from "./StyledRoot";
+import Footer from "@/components/footer/footer";
+import { NavbarProvider } from "@/components/navbar/NavbarContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +28,7 @@ export default function RootLayout({
             <Header />
             <Navbar />
             {children}
+            <Footer />
           </StyledRoot>
         </AppRouterCacheProvider>
       </body>
