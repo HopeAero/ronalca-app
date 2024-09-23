@@ -46,10 +46,13 @@ export default function Navbar() {
   const renderCategoryDropdown = useCallback(
     (category: Category) => (
       <DropdownMenu key={category.id}>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="px-3 py-2 text-sm font-medium">
-            {category.name}
-            <ChevronDown className="ml-2 h-4 w-4" />
+        <DropdownMenuTrigger className="w-full md:w-auto" asChild>
+          <Button
+            variant="ghost"
+            className="px-3 py-2 md:text-sm text-base font-medium text-left flex justify-between items-center hover:text-blue-600 hover:bg-gray-100 text-gray-700"
+          >
+            <span className="flex-grow">{category.name}</span>
+            <ChevronDown className="ml-2 h-4 w-4 flex-shrink-0" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>

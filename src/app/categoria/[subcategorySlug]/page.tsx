@@ -8,6 +8,7 @@ import type { Subcategories } from "@/shared/types/subcategory";
 import { useParams } from "next/navigation";
 import Banner from "@/components/categorias/banner";
 import CircularProgress from "@mui/material/CircularProgress";
+import Link from "next/link";
 
 export default function ProductListing() {
   const [subcategories, setSubcategories] = useState<Subcategories | null>(
@@ -65,9 +66,11 @@ export default function ProductListing() {
                   </h2>
                 </div>
                 <div className="px-4 pb-4">
-                  <Button className="w-full bg-sky-400 hover:bg-sky-500 text-white text-sm font-normal">
-                    Ver detalle
-                  </Button>
+                  <Link href={`/producto/${product.id}`}>
+                    <Button className="w-full bg-sky-400 hover:bg-sky-500 text-white text-sm font-normal">
+                      Ver detalle
+                    </Button>
+                  </Link>
                 </div>
               </div>
             ))}
