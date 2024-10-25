@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [process.env.NEXT_PUBLIC_API_URL],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   },
   webpack(config) {
     // Grab the existing rule that handles SVG imports
