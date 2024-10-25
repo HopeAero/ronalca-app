@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost"],
+    domains: [process.env.NEXT_PUBLIC_IMAGES_DOMAIN],
   },
   webpack(config) {
     // Grab the existing rule that handles SVG imports
